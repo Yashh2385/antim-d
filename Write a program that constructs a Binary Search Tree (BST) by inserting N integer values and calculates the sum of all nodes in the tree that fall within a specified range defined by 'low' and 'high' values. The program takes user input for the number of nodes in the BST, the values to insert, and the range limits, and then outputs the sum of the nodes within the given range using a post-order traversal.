@@ -1,0 +1,75 @@
+#include <iostream>
+using namespace std;
+
+struct TreeNode {
+    int data;
+    struct TreeNode* left;
+    struct TreeNode* right;
+};
+
+struct TreeNode* createNode(int data) {
+    struct TreeNode* newNode = (struct TreeNode*)malloc(sizeof(struct TreeNode));
+    newNode->data = data;
+    newNode->left = nullptr;
+    newNode->right = nullptr;
+    return newNode;
+}
+
+struct TreeNode* insert(struct TreeNode* root, int data) {
+    if (root == nullptr) {
+        return createNode(data);
+    }
+
+    if (data < root->data) {
+        root->left = insert(root->left, data);
+    } else if (data > root->data) {
+        root->right = insert(root->right, data);
+    }
+
+    return root;
+}
+
+int sumNodesInRange(struct TreeNode* root, int low, int high) {
+    //Type your code here
+    if (root == NULL) {
+        return 0;
+    }
+
+    int leftSum = sumNodesInRange(root->left, low, high);
+    int rightSum = sumNodesInRange(root->right, low, high);
+
+    if (root->data >= low && root->data <= high) {
+        return root->data + leftSum + rightSum;
+    } else if (root->data < low) {
+        return rightSum;
+    } else {
+        return leftSum;
+    }
+}
+
+struct TreeNode* buildBST() {
+    struct TreeNode* root = nullptr;
+    int n, data;
+
+    cin >> n;
+
+    for (int i = 0; i < n; i++) {
+        cin >> data;
+        root = insert(root, data);
+    }
+
+    return root;
+}
+
+int main() {
+    struct TreeNode* root = buildBST();
+
+    int low, high;
+
+    cin >> low >> high;
+
+    int sum = sumNodesInRange(root, low, high);
+    cout <<  sum ;
+
+    return 0;
+}

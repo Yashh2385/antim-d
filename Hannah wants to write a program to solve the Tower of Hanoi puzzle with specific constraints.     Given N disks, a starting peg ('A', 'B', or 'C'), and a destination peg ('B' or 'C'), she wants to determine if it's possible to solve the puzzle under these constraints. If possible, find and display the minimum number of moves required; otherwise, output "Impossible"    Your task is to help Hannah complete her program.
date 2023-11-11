@@ -1,0 +1,51 @@
+#include <iostream>
+
+using namespace std;
+
+void moveDisk(int disk, char source, char destination) {
+    cout << "Move disk " << disk << " from Peg " << source << " to Peg " << destination << endl;
+}
+
+int hanoi(int n, char source, char auxiliary, char target) {
+    //Type your code here
+    if (n > 0) {
+        int moves = 0;
+
+        moves += hanoi(n - 1, source, target, auxiliary);
+
+        moveDisk(n, source, target);
+        moves++;
+
+        moves += hanoi(n - 1, auxiliary, source, target);
+
+        return moves;
+    }
+
+    return 0;
+}
+
+int main() {
+    int n;
+    char source, destination;
+
+    cin >> n >> source >> destination;
+
+    if (source != 'A' && source != 'B' && source != 'C') {
+        cout << "Impossible" << endl;
+        return 0;
+    }
+
+    if (destination != 'B' && destination != 'C') {
+        cout << "Impossible" << endl;
+        return 0;
+    }
+
+    int totalMoves = hanoi(n, source, 'B', destination);
+    if (totalMoves > 0) {
+        cout << "Total moves: " << totalMoves << endl;
+    } else {
+        cout << "Impossible" << endl;
+    }
+
+    return 0;
+}

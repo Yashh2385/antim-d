@@ -1,0 +1,49 @@
+#include <iostream>
+#include <iomanip>  
+using namespace std;
+
+struct Node {
+    float price;
+    Node* next;
+};
+
+void insertPrice(Node** head, float newPrice) {
+    //Type your code here
+    Node* newNode = new Node;
+    newNode->price = newPrice;
+    newNode->next = *head;
+    *head = newNode;
+}
+
+void displayPrices(Node* head) {
+    //Type your code here
+    Node* current = head;
+    while (current != nullptr) {
+        // Format the output to display with two decimal places
+        cout << fixed << setprecision(2) << current->price << " ";
+        current = current->next;
+    }
+}
+
+int main() {
+    int N;
+    cin >> N;
+
+    Node* head = nullptr;
+
+    for (int i = 0; i < N; i++) {
+        float price;
+        cin >> price;
+        insertPrice(&head, price);
+    }
+
+    displayPrices(head);
+
+    while (head != nullptr) {
+        Node* temp = head;
+        head = head->next;
+        delete temp;
+    }
+
+    return 0;
+}

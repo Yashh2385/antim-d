@@ -1,0 +1,87 @@
+#include <iostream>
+#include <cstdlib>
+using namespace std;
+
+struct Node {
+    int data;
+    struct Node* next;
+};
+
+struct Node* createNode(int data) {
+    struct Node* newNode = (struct Node*)malloc(sizeof(struct Node));
+    if (newNode) {
+        newNode->data = data;
+        newNode->next = NULL;
+    }
+    return newNode;
+}
+
+void insertAtEnd(struct Node** head, int data) {
+    struct Node* newNode = createNode(data);
+    if (*head == NULL) {
+        *head = newNode;
+    } else {
+        struct Node* current = *head;
+        while (current->next != NULL) {
+            current = current->next;
+        }
+        current->next = newNode;
+    }
+}
+
+void deleteNodesLessThanFive(struct Node** head) {
+    // Type your code here
+    struct Node* current = *head;
+    struct Node* prev = NULL;
+
+    while (current != NULL) {
+        if (current->data < 5) {
+            if (prev == NULL) {
+                *head = current->next;
+            } else {
+                prev->next = current->next;
+            }
+            free(current);
+            current = prev ? prev->next : *head;
+        } else {
+            prev = current;
+            current = current->next;
+        }
+    }
+}
+
+void printList(struct Node* head) {
+    struct Node* current = head;
+    while (current != NULL) {
+        cout << current->data << " -> ";
+        current = current->next;
+    }
+    cout << "NULL" << endl;
+}
+
+void freeList(struct Node* head) {
+    struct Node* current = head;
+    while (current != NULL) {
+        struct Node* temp = current;
+        current = current->next;
+        free(temp);
+    }
+}
+
+int main() {
+    struct Node* head = NULL;
+    int n, data;
+
+    cin >> n;
+
+    for (int i = 0; i < n; i++) {
+        cin >> data;
+        insertAtEnd(&head, data);
+    }
+
+    printList(head);
+    deleteNodesLessThanFive(&head);
+    printList(head);
+    freeList(head);
+    return 0;
+}

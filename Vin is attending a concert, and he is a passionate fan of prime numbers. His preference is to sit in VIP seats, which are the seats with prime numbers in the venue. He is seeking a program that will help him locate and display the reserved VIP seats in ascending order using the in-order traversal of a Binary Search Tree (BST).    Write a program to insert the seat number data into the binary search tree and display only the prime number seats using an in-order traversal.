@@ -1,0 +1,75 @@
+#include <iostream>
+using namespace std;
+
+struct TreeNode {
+    int data;
+    TreeNode* left;
+    TreeNode* right;
+};
+
+TreeNode* createNode(int value) {
+    TreeNode* newNode = (TreeNode*)malloc(sizeof(TreeNode));
+    newNode->data = value;
+    newNode->left = newNode->right = nullptr;
+    return newNode;
+}
+
+TreeNode* insert(TreeNode* root, int value) {
+    //Type your code here
+    if (root == NULL) {
+        return createNode(value);
+    }
+
+    if (value < root->data) {
+        root->left = insert(root->left, value);
+    } else if (value > root->data) {
+        root->right = insert(root->right, value);
+    }
+
+    return root;
+}
+
+void inOrderTraversal(TreeNode* root) {
+    if (root != nullptr) {
+        inOrderTraversal(root->left);
+        cout << root->data << " ";
+        inOrderTraversal(root->right);
+    }
+}
+
+int isPrime(int num) {
+    if (num <= 1) {
+        return 0;
+    }
+    for (int i = 2; i * i <= num; i++) {
+        if (num % i == 0) {
+            return 0;
+        }
+    }
+    return 1;
+}
+
+int main() {
+    TreeNode* root = nullptr;
+    int n, seatNumber;
+    int primeSeatsFound = 0;
+
+    cin >> n;
+
+    for (int i = 0; i < n; i++) {
+        cin >> seatNumber;
+        if (isPrime(seatNumber)) {
+            root = insert(root, seatNumber);
+            primeSeatsFound = 1;
+        }
+    }
+
+    if (primeSeatsFound) {
+        inOrderTraversal(root);
+    } else {
+        cout << "No prime seat is chosen" ;
+    }
+
+    free(root);
+    return 0;
+}

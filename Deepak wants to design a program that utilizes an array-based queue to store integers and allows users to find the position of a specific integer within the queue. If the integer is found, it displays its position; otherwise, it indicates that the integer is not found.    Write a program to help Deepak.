@@ -1,0 +1,70 @@
+#include <iostream>
+#include <cstdlib>
+using namespace std;
+
+#define MAX_QUEUE_SIZE 100
+
+typedef struct {
+    int data[MAX_QUEUE_SIZE];
+    int front;
+    int rear;
+    int size;
+} Queue;
+
+void initializeQueue(Queue *queue) {
+    queue->front = 0;
+    queue->rear = -1;
+    queue->size = 0;
+}
+
+int isFull(Queue *queue) {
+    return queue->size == MAX_QUEUE_SIZE;
+}
+
+int isEmpty(Queue *queue) {
+    return queue->size == 0;
+}
+
+void enqueue(Queue *queue, int value) {
+    if (!isFull(queue)) {
+        queue->rear = (queue->rear + 1) % MAX_QUEUE_SIZE;
+        queue->data[queue->rear] = value;
+        queue->size++;
+    } 
+}
+
+int findPosition(Queue *queue, int target) {
+    // Type your code here
+    int position = -1;
+    for (int i = 0; i < queue->size; i++) {
+        int index = (queue->front + i) % MAX_QUEUE_SIZE;
+        if (queue->data[index] == target) {
+            position = i;
+            break;
+        }
+    }
+    return position;
+}
+
+int main() {
+    Queue queue;
+    initializeQueue(&queue);
+
+    int n, target;
+    cin >> n;
+    for (int i = 0; i < n; i++) {
+        int value;
+        cin >> value;
+        enqueue(&queue, value);
+    }
+    cin >> target;
+    int position = findPosition(&queue, target);
+
+    if (position != -1) {
+        cout << "Position of " << target << " in the queue: " <<  position << endl;
+    } else {
+        cout << target << " Not found" << endl;
+    }
+
+    return 0;
+}

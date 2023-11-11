@@ -1,0 +1,62 @@
+#include <stdio.h>
+
+void minHeapify(int arr[], int n, int i) {
+    int smallest = i;
+    int left = 2 * i + 1;
+    int right = 2 * i + 2;
+
+    if (left < n && arr[left] < arr[smallest]) {
+        smallest = left;
+    }
+
+    if (right < n && arr[right] < arr[smallest]) {
+        smallest = right;
+    }
+
+    if (smallest != i) {
+        int temp = arr[i];
+        arr[i] = arr[smallest];
+        arr[smallest] = temp;
+
+        minHeapify(arr, n, smallest);
+    }
+}
+
+void buildMinHeap(int arr[], int n) {
+    //Type your code here
+    for (int i = n / 2 - 1; i >= 0; i--) {
+        minHeapify(arr, n, i);
+    }
+}
+
+int sumMinHeap(int arr[], int n) {
+    //Type your code here
+    int sum = 0;
+    for (int i = 0; i < n; i++) {
+        sum += arr[i];
+    }
+    return sum;
+}
+
+int main() {
+    int n;
+    scanf("%d", &n);
+
+    int arr[n];
+    for (int i = 0; i < n; i++) {
+        scanf("%d", &arr[i]);
+    }
+
+    buildMinHeap(arr, n);
+
+    printf("Min-Heap elements: ");
+    for (int i = 0; i < n; i++) {
+        printf("%d ", arr[i]);
+    }
+    printf("\n");
+
+    int heapSum = sumMinHeap(arr, n);
+    printf("Sum of elements in the Min-Heap: %d", heapSum);
+
+    return 0;
+}

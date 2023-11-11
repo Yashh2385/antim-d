@@ -1,0 +1,34 @@
+#include <iostream>
+using namespace std;
+
+int main() {
+    int n;
+    cin >> n;
+    int scores[n];
+
+    for (int i = 0; i < n; i++) {
+        cin >> scores[i];
+    }
+
+    int minIndex = 0;
+    for (int i = 1; i < n; i++) {
+        if (scores[i] < scores[minIndex]) {
+            minIndex = i;
+        }
+    }
+
+    for (int i = minIndex; i < n - 1; i++) {
+        scores[i] = scores[i + 1];
+    }
+
+    int sum = 0;
+    for (int i = 0; i < n - 1; i++) {
+        sum += scores[i];
+    }
+
+    float average = float(sum) / (n - 1);
+    cout.precision(2);
+    cout << fixed << average;
+
+    return 0;
+}

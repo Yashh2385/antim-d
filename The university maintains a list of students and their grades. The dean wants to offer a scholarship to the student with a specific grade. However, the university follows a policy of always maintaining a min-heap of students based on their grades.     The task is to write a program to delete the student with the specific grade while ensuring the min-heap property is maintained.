@@ -1,0 +1,97 @@
+// You are using GCC
+#include <stdio.h>
+
+void swap(int *x, int *y) {
+    int temp = *x;
+    *x = *y;
+    *y = temp;
+}
+
+void minHeapify(int heap[], int size, int i) {
+    int smallest = i;
+    int left = 2 * i + 1;
+    int right = 2 * i + 2;
+
+    if (left < size && heap[left] < heap[smallest])
+        smallest = left;
+
+    if (right < size && heap[right] < heap[smallest])
+        smallest = right;
+
+    if (smallest != i) {
+        swap(&heap[i], &heap[smallest]);
+        minHeapify(heap, size, smallest);
+    }
+}
+
+void buildMinHeap(int heap[], int size) {
+    for (int i = (size / 2) - 1; i >= 0; i--) {
+        minHeapify(heap, size, i);
+    }
+}
+
+void insertElement(int heap[], int *size, int value) {
+    (*size)++;
+    int i = *size - 1;
+    heap[i] = value;
+
+    while (i > 0 && heap[(i - 1) / 2] > heap[i]) {
+        swap(&heap[i], &heap[(i - 1) / 2]);
+        i = (i - 1) / 2;
+    }
+}
+
+int deleteElement(int heap[], int *size, int value) {
+    //Type your code here
+    int i;
+    for (i = 0; i < *size; i++) {
+        if (heap[i] == value)
+            break;
+    }
+
+    if (i == *size) {
+        return 0; 
+    }
+
+    heap[i] = heap[*size - 1];
+    (*size)--;
+    minHeapify(heap, *size, i);
+    return 1; 
+}
+
+void displayMinHeap(int heap[], int size) {
+    for (int i = 0; i < size; i++) {
+        printf("%d ", heap[i]);
+    }
+    printf("\n");
+}
+
+int main() {
+    int n;
+    scanf("%d", &n);
+
+    int heap[n];
+    int size = 0;
+
+    for (int i = 0; i < n; i++) {
+        int value;
+        scanf("%d", &value);
+        insertElement(heap, &size, value);
+    }
+
+    buildMinHeap(heap, size);
+    printf("Min-heap: ");
+    displayMinHeap(heap, size);
+
+    int grade_to_delete;
+    scanf("%d", &grade_to_delete);
+
+    if (deleteElement(heap, &size, grade_to_delete)) {
+        printf("Min-heap after deletion: ");
+        displayMinHeap(heap, size);
+    } else {
+        printf("Student with grade %d not found", grade_to_delete);
+    }
+
+    return 0;
+}

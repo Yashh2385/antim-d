@@ -1,0 +1,60 @@
+#include <iostream>
+#include <cstdlib>
+using namespace std;
+
+struct Node {
+    int data;
+    Node* next;
+};
+
+
+void deleteNodeAfterValue(Node* head, int x) {
+    //Type your code here
+    Node* current = head;
+
+    while (current != nullptr && current->next != nullptr) {
+        if (current->data == x) {
+            Node* temp = current->next;
+            current->next = temp->next;
+            free(temp);  // Use free instead of delete
+            return;
+        }
+        current = current->next;
+    }
+}
+
+void printList(Node* head) {
+    Node* current = head;
+    while (current != nullptr) {
+        cout << current->data << " -> ";
+        current = current->next;
+    }
+    cout << "NULL" << endl;
+}
+
+int main() {
+    Node* head = nullptr;
+    int x;
+
+    int n, value;
+    cin >> n;
+    for (int i = 0; i < n; i++) {
+        cin >> value;
+        Node* newNode = (Node*)malloc(sizeof(Node));  
+        newNode->data = value;
+        newNode->next = head;
+        head = newNode;
+    }
+
+    cout << "Original Linked List: ";
+    printList(head);
+
+    cin >> x;
+
+    deleteNodeAfterValue(head, x);
+
+    cout << "After deleting node after " << x << " : ";
+    printList(head);
+
+    return 0;
+}

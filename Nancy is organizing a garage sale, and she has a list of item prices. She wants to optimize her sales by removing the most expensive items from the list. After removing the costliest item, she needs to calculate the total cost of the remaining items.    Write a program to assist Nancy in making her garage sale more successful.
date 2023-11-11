@@ -1,0 +1,22 @@
+#include <iostream>
+using namespace std;
+
+int main() {
+    int n, max_item = 0, total_cost = 0;
+
+    cin >> n;
+    int item_prices[n];
+
+    for (int i = 0; i < n; i++) {
+        cin >> item_prices[i];
+        total_cost += item_prices[i];
+        if (item_prices[i] > max_item) {
+            max_item = item_prices[i];
+        }
+    }
+
+    total_cost -= max_item;
+    cout << total_cost;
+
+    return 0;
+}

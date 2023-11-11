@@ -1,0 +1,92 @@
+#include <iostream>
+using namespace std;
+
+struct Node {
+    int data;
+    Node* next;
+};
+
+struct Queue {
+    Node* front;
+    Node* rear;
+};
+
+Node* createNode(int data) {
+    Node* newNode = new Node;
+    newNode->data = data;
+    newNode->next = nullptr;
+    return newNode;
+}
+
+Queue* initQueue() {
+    Queue* queue = new Queue;
+    queue->front = queue->rear = nullptr;
+    return queue;
+}
+
+void enqueue(Queue* queue, int data) {
+    Node* newNode = createNode(data);
+    if (queue->rear == nullptr) {
+        queue->front = queue->rear = newNode;
+        return;
+    }
+    queue->rear->next = newNode;
+    queue->rear = newNode;
+}
+
+int dequeue(Queue* queue) {
+    if (queue->front == nullptr)
+        return -1;
+    int data = queue->front->data;
+    Node* temp = queue->front;
+    queue->front = queue->front->next;
+    delete temp;
+    return data;
+}
+
+void findMinMax(Queue* queue, int* smallest, int* largest) {
+    // Type your code here
+    if (queue->front == nullptr) {
+        *smallest = *largest = -1;
+        return;
+    }
+
+    *smallest = *largest = queue->front->data;
+    Node* current = queue->front;
+
+    while (current != nullptr) {
+        if (current->data < *smallest)
+            *smallest = current->data;
+        if (current->data > *largest)
+            *largest = current->data;
+        current = current->next;
+    }
+}
+
+int main() {
+    Queue* queue = initQueue();
+    int num, smallest, largest;
+
+    while (true) {
+        cin >> num;
+        if (num == -1)
+            break;
+        enqueue(queue, num);
+    }
+
+    findMinMax(queue, &smallest, &largest);
+
+    if (smallest != -1 && largest != -1) {
+        cout << "Smallest: " << smallest << endl;
+        cout << "Largest: " << largest << endl;
+    } else {
+        cout << "Queue is empty" << endl;
+    }
+
+    while (queue->front != nullptr) {
+        dequeue(queue);
+    }
+    delete queue;
+
+    return 0;
+}

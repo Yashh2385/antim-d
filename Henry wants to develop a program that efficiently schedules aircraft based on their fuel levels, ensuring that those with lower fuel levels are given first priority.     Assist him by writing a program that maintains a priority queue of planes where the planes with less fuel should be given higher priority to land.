@@ -1,0 +1,63 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+struct Aircraft {
+    char flight_number[20];
+    int fuel_level;
+    struct Aircraft* next;
+};
+
+struct Aircraft* front = NULL;
+
+void insertAircraft(char flight_number[], int fuel_level) {
+    struct Aircraft* newAircraft = (struct Aircraft*)malloc(sizeof(struct Aircraft));
+    if (newAircraft == NULL) {
+        return;
+    }
+
+    strcpy(newAircraft->flight_number, flight_number);
+    newAircraft->fuel_level = fuel_level;
+    newAircraft->next = NULL;
+
+    if (front == NULL || newAircraft->fuel_level < front->fuel_level) {
+        newAircraft->next = front;
+        front = newAircraft;
+    } 
+    else {
+        struct Aircraft* current = front;
+        while (current->next != NULL && current->next->fuel_level <= newAircraft->fuel_level) {
+            current = current->next;
+        }
+        newAircraft->next = current->next;
+        current->next = newAircraft;
+    }
+}
+
+void scheduleAircraft() {
+    //Type your code here
+    struct Aircraft* current = front;
+    while (current != NULL) {
+        printf("%s %d\n", current->flight_number, current->fuel_level);
+        current = current->next;
+    }
+}
+
+int main() {
+    int numAircraft;
+    scanf("%d", &numAircraft);
+
+    char flight_number[20];
+    int fuel_level;
+
+    for (int i = 0; i < numAircraft; i++) {
+        scanf("%s", flight_number);
+        scanf("%d", &fuel_level);
+
+        insertAircraft(flight_number, fuel_level);
+    }
+
+    scheduleAircraft();
+
+    return 0;
+}

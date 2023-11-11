@@ -1,0 +1,73 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+struct Node {
+    int data;
+    struct Node* next;
+};
+
+struct Queue {
+    struct Node* front;
+    struct Node* rear;
+};
+
+struct Node* createNode(int data) {
+    struct Node* newNode = (struct Node*)malloc(sizeof(struct Node));
+    newNode->data = data;
+    newNode->next = NULL;
+    return newNode;
+}
+
+struct Queue* createQueue() {
+    struct Queue* queue = (struct Queue*)malloc(sizeof(struct Queue));
+    queue->front = queue->rear = NULL;
+    return queue;
+}
+
+void enqueue(struct Queue* queue, int data) {
+    struct Node* newNode = createNode(data);
+    if (queue->rear == NULL) {
+        queue->front = queue->rear = newNode;
+        return;
+    }
+    queue->rear->next = newNode;
+    queue->rear = newNode;
+}
+
+int dequeue(struct Queue* queue) {
+    if (queue->front == NULL) {
+        return -1;
+    }
+    int data = queue->front->data;
+    struct Node* temp = queue->front;
+    queue->front = queue->front->next;
+    free(temp);
+    if (queue->front == NULL) {
+        queue->rear = NULL;
+    }
+    return data;
+}
+
+void dequeueEvens(struct Queue* queue) {
+    // Type your code here
+    while (queue->front != NULL) {
+        int num = dequeue(queue);
+        if (num % 2 == 0 && num>0) {
+            printf("%d ", num);
+        }
+    }
+    printf("\n");
+}
+
+int main() {
+    int capacity, num, i;
+    scanf("%d", &capacity);
+    struct Queue* queue = createQueue();
+    for (i = 0; i < capacity; ++i) {
+        scanf("%d", &num);
+        enqueue(queue, num);
+    }
+    dequeueEvens(queue);
+    free(queue);
+    return 0;
+}

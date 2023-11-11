@@ -1,0 +1,45 @@
+#include <iostream>
+using namespace std;
+
+int binarySearch(double datasets[], int n, double target) {
+    //Type your code here
+    int left = 0, right = n - 1;
+
+    while (left <= right) {
+        int mid = left + (right - left) / 2;
+
+        if (datasets[mid] == target) {
+            return mid; // Found the dataset
+        } else if (datasets[mid] < target) {
+            left = mid + 1;
+        } else {
+            right = mid - 1;
+        }
+    }
+
+    return -1;
+}
+
+int main() {
+    int n;
+    cin >> n;
+
+    double datasets[n];
+
+    for (int i = 0; i < n; ++i) {
+        cin >> datasets[i];
+    }
+
+    double target;
+    cin >> target;
+
+    int result = binarySearch(datasets, n, target);
+
+    if (result != -1) {
+        cout << result ; 
+    } else {
+        cout << "Not found" ;
+    }
+
+    return 0;
+}

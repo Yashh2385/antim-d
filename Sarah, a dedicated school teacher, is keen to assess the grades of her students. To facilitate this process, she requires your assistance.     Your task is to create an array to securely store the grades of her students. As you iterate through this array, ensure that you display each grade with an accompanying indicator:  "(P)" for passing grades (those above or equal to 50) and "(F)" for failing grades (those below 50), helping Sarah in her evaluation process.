@@ -1,0 +1,23 @@
+#include <stdio.h>
+
+int main() {
+    int numStudents;
+   scanf("%d", &numStudents);
+    if (numStudents < 1) {
+       
+        return 1; 
+    }
+    int grades[numStudents];
+    for (int i = 0; i < numStudents; i++) {
+        
+        scanf("%d", &grades[i]);
+    }
+    for (int i = 0; i < numStudents; i++) {
+        if (grades[i] >= 50) {
+            printf("%d (P)\n", grades[i]);
+        } else {
+            printf("%d (F)\n", grades[i]);
+        }
+    }
+    return 0;  
+}

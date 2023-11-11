@@ -1,0 +1,66 @@
+#include <iostream>
+#include <cstdlib>
+#include <iomanip>
+using namespace std;
+
+struct Node {
+    int data;
+    struct Node* link;
+};
+
+struct Node* top = NULL;
+
+void push(int data) {
+    struct Node* temp = (struct Node*)malloc(sizeof(struct Node));
+    if (temp == NULL) {
+        exit(0);
+    }
+    temp->data = data;
+    temp->link = top;
+    top = temp;
+}
+
+int isEmpty() {
+    return top == NULL;
+}
+
+int sumOfElements() {
+    int sum = 0;
+    struct Node* temp = top;
+    while (temp != NULL) {
+        sum += temp->data;
+        temp = temp->link;
+    }
+    return sum;
+}
+
+double calculateAverage() {
+    //Type your code here
+    int count = 0;
+    int sum = sumOfElements();
+    struct Node* temp = top;
+    while (temp != NULL) {
+        count++;
+        temp = temp->link;
+    }
+    if (count == 0) {
+        return 0.0;
+    }
+    return (double)sum / count;
+}
+
+int main() {
+    int N;
+    cin >> N;
+
+    for (int i = 0; i < N; i++) {
+        int value;
+        cin >> value;
+        push(value);
+    }
+
+    double average = calculateAverage();
+    cout << fixed << setprecision(2) << "Average: " << average << endl;
+
+    return 0;
+}

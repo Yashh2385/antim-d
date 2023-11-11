@@ -1,0 +1,64 @@
+#include <iostream>
+using namespace std;
+
+struct Customer {
+    int id;
+    Customer* next;
+};
+
+Customer* removeFirstCustomer(Customer* waitlist) {
+    if (waitlist == nullptr) {
+        return nullptr;
+    }
+
+    Customer* newWaitlist = waitlist->next;
+    delete waitlist;
+    return newWaitlist;
+}
+
+void displayWaitlist(Customer* waitlist) {
+    if (waitlist == nullptr) {
+        cout << "Waitlist is empty";
+        return;
+    }
+    Customer* current = waitlist;
+    while (current != nullptr) {
+        cout << current->id << " ";
+        current = current->next;
+    }
+}
+
+int main() {
+    Customer* waitlist = nullptr;
+    int numCustomers;
+    cin >> numCustomers;
+
+    for (int i = 0; i < numCustomers; i++) {
+        int id;
+        cin >> id;
+        Customer* newCustomer = new Customer;
+        newCustomer->id = id;
+        newCustomer->next = nullptr;
+
+        if (waitlist == nullptr) {
+            waitlist = newCustomer;
+        } else {
+            Customer* current = waitlist;
+            while (current->next != nullptr) {
+                current = current->next;
+            }
+            current->next = newCustomer;
+        }
+    }
+
+    waitlist = removeFirstCustomer(waitlist);
+    displayWaitlist(waitlist);
+
+    while (waitlist != nullptr) {
+        Customer* temp = waitlist;
+        waitlist = waitlist->next;
+        delete temp;
+    }
+
+    return 0;
+}

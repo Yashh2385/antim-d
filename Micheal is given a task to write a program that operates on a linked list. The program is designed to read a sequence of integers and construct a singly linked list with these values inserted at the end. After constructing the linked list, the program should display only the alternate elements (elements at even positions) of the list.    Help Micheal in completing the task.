@@ -1,0 +1,55 @@
+#include <iostream>
+using namespace std;
+
+struct Node {
+    int value;
+    Node* next;
+};
+
+Node* insertAtEnd(Node* head, int value) {
+    Node* newNode = new Node;
+    newNode->value = value;
+    newNode->next = nullptr;
+
+    if (head == nullptr) {
+        return newNode;
+    }
+
+    Node* current = head;
+    while (current->next != nullptr) {
+        current = current->next;
+    }
+
+    current->next = newNode;
+
+    return head;
+}
+
+void displayAlternateElements(Node* head) {
+    Node* current = head;
+    int index = 1; 
+
+    while (current != nullptr) {
+        if (index % 2 == 0) {
+            cout << current->value << " ";
+        }
+
+        current = current->next;
+        index++;
+    }
+}
+
+int main() {
+    Node* head = nullptr;
+    int value, numItems;
+
+    cin >> numItems;
+    for (int i = 0; i < numItems; i++) {
+        cin >> value;
+        head = insertAtEnd(head, value);
+    }
+
+    displayAlternateElements(head);
+
+    return 0;
+}

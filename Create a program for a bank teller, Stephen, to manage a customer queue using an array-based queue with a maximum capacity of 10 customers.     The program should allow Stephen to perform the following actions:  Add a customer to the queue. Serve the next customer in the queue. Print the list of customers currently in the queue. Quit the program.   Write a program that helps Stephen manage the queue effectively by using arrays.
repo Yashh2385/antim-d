@@ -1,0 +1,66 @@
+#include <iostream>
+using namespace std;
+
+#define MAX_SIZE 10
+
+int queue[MAX_SIZE];
+int front = -1, rear = -1;
+
+int isEmpty() {
+    return front == -1;
+}
+
+int isFull() {
+    return rear == MAX_SIZE - 1;
+}
+
+void enqueue(int customer) {
+    //Type your code here
+
+}
+
+void serveCustomer() {
+    //Type your code here
+    
+}
+
+void printQueue() {
+    if (isEmpty()) {
+        cout << "Queue is empty." << endl;
+        return;
+    }
+
+    cout << "Customers in queue:" << endl;
+    for (int i = front; i <= rear; i++) {
+        cout << queue[i] << " ";
+    }
+    cout << "\n";
+}
+
+int main() {
+    int customer;
+
+    while (1) {
+        int choice;
+        cin >> choice;
+
+        switch (choice) {
+            case 1:
+                cin >> customer;
+                enqueue(customer);
+                break;
+            case 2:
+                serveCustomer();
+                break;
+            case 3:
+                printQueue();
+                break;
+            case 4:
+            printf("Bye!!!");
+                return 0;
+            default:
+                cout << "Invalid option." << endl;
+                return 0;
+        }
+    }
+}

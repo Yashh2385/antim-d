@@ -1,0 +1,40 @@
+#include <stdio.h>
+
+int main() {
+    int size;
+    scanf("%d", &size);
+
+    int johnsSet[size];
+    int lessThan50[size];
+    int greaterThan50[size];
+
+    int lessCount = 0;
+    int greaterCount = 0;
+
+    for (int i = 0; i < size; i++) {
+        scanf("%d", &johnsSet[i]);
+    }
+
+    for (int i = 0; i < size; i++) {
+        if (johnsSet[i] < 50) {
+            lessThan50[lessCount] = johnsSet[i];
+            lessCount++;
+        } else {
+            greaterThan50[greaterCount] = johnsSet[i];
+            greaterCount++;
+        }
+    }
+
+    printf("Scores less than 50: ");
+    for (int i = 0; i < lessCount; i++) {
+        printf("%d ", lessThan50[i]);
+    }
+    printf("\n");
+
+    printf("Scores greater than 50: ");
+    for (int i = 0; i < greaterCount; i++) {
+        printf("%d ", greaterThan50[i]);
+    }
+
+    return 0;
+}

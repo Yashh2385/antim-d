@@ -1,0 +1,71 @@
+#include <iostream>
+using namespace std;
+
+struct Node {
+    int data;
+    struct Node* left;
+    struct Node* right;
+};
+
+struct Node* createNode(int data) {
+    struct Node* newNode = (struct Node*)malloc(sizeof(struct Node));
+    newNode->data = data;
+    newNode->left = newNode->right = nullptr;
+    return newNode;
+}
+
+struct Node* insert(struct Node* root, int data) {
+    if (root == nullptr) {
+        return createNode(data);
+    }
+
+    if (data < root->data) {
+        root->left = insert(root->left, data);
+    } else if (data > root->data) {
+        root->right = insert(root->right, data);
+    }
+
+    return root;
+}
+
+void preorderTraversal(struct Node* root, int target, int* path, int depth) {
+    //Type your code here
+    if (root == nullptr) {
+        return;
+    }
+
+    path[depth] = root->data;
+    depth++;
+
+    if (root->data == target) {
+        for (int i = 0; i < depth; i++) {
+            cout << path[i] << " ";
+        }
+        cout << endl;
+    }
+
+    preorderTraversal(root->left, target, path, depth);
+    preorderTraversal(root->right, target, path, depth);
+}
+
+int main() {
+    struct Node* root = nullptr;
+    int data, target;
+    int* path = (int*)calloc(100, sizeof(int));
+
+    while (1) {
+        cin >> data;
+        if (data == -1) {
+            break;
+        }
+        root = insert(root, data);
+    }
+
+    cin >> target;
+
+    preorderTraversal(root, target, path, 0);
+    
+    free(path);
+
+    return 0;
+}

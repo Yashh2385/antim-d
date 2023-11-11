@@ -1,0 +1,68 @@
+#include <iostream>
+using namespace std; 
+
+struct Node {
+    int data;
+    Node* prev;
+    Node* next;
+};
+
+void deleteFromTail(Node*& head) {
+    //Type your code here
+    if (head == nullptr) {
+        return;
+    }
+    if (head->next == nullptr) {
+        delete head;
+        head = nullptr;
+        return;
+    }
+
+    Node* current = head;
+    while (current->next->next != nullptr) {
+        current = current->next;
+    }
+
+    delete current->next;
+    current->next = nullptr;
+}
+
+void displayList(Node* head) {
+    Node* current = head;
+    while (current != nullptr) {
+        cout << current->data << " ";
+        current = current->next;
+    }
+    cout << endl;
+}
+
+int main() {
+    int n;
+    cin >> n; 
+
+    Node* head = nullptr;
+    Node* tail = nullptr;
+
+    for (int i = 0; i < n; i++) {
+        int value;
+        cin >> value;
+        Node* newNode = new Node{value, tail, nullptr};
+        if (tail == nullptr) {
+            head = newNode;
+        } else {
+            tail->next = newNode;
+        }
+        tail = newNode;
+    }
+
+    deleteFromTail(head);
+    displayList(head);
+
+    while (head != nullptr) {
+        Node* temp = head;
+        head = head->next;
+        delete temp;
+    }
+
+    return 0;
+}

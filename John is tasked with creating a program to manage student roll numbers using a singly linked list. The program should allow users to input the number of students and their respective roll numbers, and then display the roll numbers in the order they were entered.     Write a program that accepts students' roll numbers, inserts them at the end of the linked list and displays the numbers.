@@ -1,0 +1,51 @@
+#include <iostream>
+using namespace std;
+
+struct Node {
+    int rollNumber;
+    Node* next;
+};
+
+Node* insertAtEnd(Node* head, int rollNumber) {
+    //Type your code here
+    Node* newNode = new Node;
+    newNode->rollNumber = rollNumber;
+    newNode->next = nullptr;
+
+    if (head == nullptr) {
+        return newNode;
+    }
+
+    Node* current = head;
+    while (current->next != nullptr) {
+        current = current->next;
+    }
+
+    current->next = newNode;
+
+    return head;
+}
+
+void display(Node* head) {
+    //Type your code here
+    Node* current = head;
+    while (current != nullptr) {
+        cout << current->rollNumber << " ";
+        current = current->next;
+    }
+}
+
+int main() {
+    Node* head = nullptr;
+    int rollNumber, numStudents;
+
+    cin >> numStudents;
+    for (int i = 0; i < numStudents; i++) {
+        cin >> rollNumber;
+        head = insertAtEnd(head, rollNumber);
+    }
+
+    display(head);
+
+    return 0;
+}

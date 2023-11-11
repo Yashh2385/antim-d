@@ -1,0 +1,69 @@
+// You are using GCC
+#include <iostream>
+using namespace std;
+
+struct TreeNode {
+    int data;
+    TreeNode* left;
+    TreeNode* right;
+};
+
+TreeNode* insert(TreeNode* root, int grade) {
+    //Type your code here
+    if (root == nullptr) {
+        TreeNode* newNode = (TreeNode*)malloc(sizeof(TreeNode));
+        newNode->data = grade;
+        newNode->left = nullptr;
+        newNode->right = nullptr;
+        return newNode;
+    }
+
+    if (grade < root->data) {
+        root->left = insert(root->left, grade);
+    } else if (grade > root->data) {
+        root->right = insert(root->right, grade);
+    }
+
+    return root;
+}
+
+void preOrderTraversal(TreeNode* root) {
+    if (root != nullptr) {
+        if (root->data >= 50) {
+            cout << root->data << " ";
+        }
+        preOrderTraversal(root->left);
+        preOrderTraversal(root->right);
+    }
+}
+
+void deleteTree(TreeNode* root) {
+    if (root != nullptr) {
+        deleteTree(root->left);
+        deleteTree(root->right);
+        free(root);
+    }
+}
+
+int main() {
+    int n;
+    cin >> n;
+
+    TreeNode* root = nullptr;
+
+    for (int i = 0; i < n; i++) {
+        int grade;
+        cin >> grade;
+
+        if (grade >= 50) {
+            root = insert(root, grade);
+        }
+    }
+
+    preOrderTraversal(root);
+    cout << endl;
+
+    deleteTree(root);
+
+    return 0;
+}

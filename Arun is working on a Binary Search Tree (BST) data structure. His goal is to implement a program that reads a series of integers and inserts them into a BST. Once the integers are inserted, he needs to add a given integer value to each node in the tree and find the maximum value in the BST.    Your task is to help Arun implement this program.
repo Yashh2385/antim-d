@@ -1,0 +1,71 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <limits.h>
+
+struct node {
+    int data;
+    struct node* left;
+    struct node* right;
+};
+
+struct node* createNode(int data) {
+    struct node* newNode = (struct node*)malloc(sizeof(struct node));
+    newNode->data = data;
+    newNode->left = newNode->right = NULL;
+    return newNode;
+}
+
+struct node* insert(struct node* root, int data) {
+    if (root == NULL) {
+        return createNode(data);
+    } else if (data < root->data) {
+        root->left = insert(root->left, data);
+    } else {
+        root->right = insert(root->right, data);
+    }
+    return root;
+}
+
+int findMax(struct node* root) {
+    //Type your code here
+    if (root == nullptr) {
+        return INT_MIN;
+    }
+    int max = root->data;
+    while (root->right != nullptr) {
+        root = root->right;
+        if (root->data > max) {
+            max = root->data;
+        }
+    }
+    return max;
+}
+
+void addValue(struct node* root, int value) {
+    if (root == NULL) {
+        return;
+    }
+    root->data += value;
+    addValue(root->left, value);
+    addValue(root->right, value);
+}
+
+int main() {
+    int n, value, add;
+    struct node* root = NULL;
+
+    scanf("%d", &n);
+
+    for (int i = 0; i < n; i++) {
+        scanf("%d", &value);
+        root = insert(root, value);
+    }
+
+    scanf("%d", &add);
+    addValue(root, add);
+
+    int max = findMax(root);
+    printf("%d\n", max);
+
+    return 0;
+}

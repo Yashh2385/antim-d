@@ -1,0 +1,90 @@
+#include <iostream>
+using namespace std;
+
+struct Node {
+    int data;
+    Node* next;
+};
+
+struct Queue {
+    Node* front;
+    Node* rear;
+};
+
+Queue* createQueue() {
+    Queue* queue = new Queue;
+    queue->front = nullptr;
+    queue->rear = nullptr;
+    return queue;
+}
+
+void enqueue(Queue* queue, int value) {
+    Node* newNode = new Node;
+    newNode->data = value;
+    newNode->next = nullptr;
+
+    if (queue->rear == nullptr) {
+        queue->front = newNode;
+        queue->rear = newNode;
+        return;
+    }
+
+    queue->rear->next = newNode;
+    queue->rear = newNode;
+}
+
+void selectiveDequeue(Queue* queue, int multiple) {
+    // Type your code here
+    while (queue->front != NULL && (queue->front->data % multiple == 0)) {
+        struct Node* temp = queue->front;
+        queue->front = queue->front->next;
+        free(temp);
+    }
+
+    struct Node* current = queue->front;
+    struct Node* previous = NULL;
+
+    while (current != NULL) {
+        if (current->data % multiple == 0) {
+            previous->next = current->next;
+            free(current);
+            current = previous->next;
+        } else {
+            previous = current;
+            current = current->next;
+        }
+    }
+}
+
+void displayQueue(Queue* queue) {
+    Node* current = queue->front;
+    while (current != nullptr) {
+        cout << current->data << " ";
+        current = current->next;
+    }
+    cout << endl;
+}
+
+int main() {
+    Queue* queue = createQueue();
+    int n, multiple, value;
+
+    cin >> n;
+
+    for (int i = 0; i < n; i++) {
+        cin >> value;
+        enqueue(queue, value);
+    }
+
+    cin >> multiple;
+
+    cout << "Original Queue: ";
+    displayQueue(queue);
+
+    selectiveDequeue(queue, multiple);
+
+    cout << "Queue after selective dequeue: ";
+    displayQueue(queue);
+
+    return 0;
+}

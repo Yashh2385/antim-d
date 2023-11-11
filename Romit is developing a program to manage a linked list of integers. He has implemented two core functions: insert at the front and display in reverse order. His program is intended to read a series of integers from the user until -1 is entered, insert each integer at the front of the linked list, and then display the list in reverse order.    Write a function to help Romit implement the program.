@@ -1,0 +1,49 @@
+#include <iostream>
+#include <cstdlib>
+using namespace std;
+
+struct Node {
+    int data;
+    Node* next;
+};
+
+Node* insertAtFront(Node* head, int data) {
+    Node* newNode = (Node*)malloc(sizeof(Node));
+    newNode->data = data;
+    newNode->next = head;
+    return newNode;
+}
+
+void displayReverse(Node* head) {
+    if (head == nullptr) {
+        return;
+    }
+    displayReverse(head->next);
+    cout << head->data << " -> ";
+}
+
+int main() {
+    Node* head = nullptr;
+    int num;
+
+    while (true) {
+        cin >> num;
+
+        if (num == -1) {
+            break;
+        }
+
+        head = insertAtFront(head, num);
+    }
+
+    displayReverse(head);
+    cout << "NULL" << endl;
+
+    while (head != nullptr) {
+        Node* temp = head;
+        head = head->next;
+        free(temp);
+    }
+
+    return 0;
+}

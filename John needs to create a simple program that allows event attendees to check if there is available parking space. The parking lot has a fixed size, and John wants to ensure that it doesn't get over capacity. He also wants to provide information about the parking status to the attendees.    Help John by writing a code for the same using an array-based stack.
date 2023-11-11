@@ -1,0 +1,56 @@
+#include <iostream>
+using namespace std;
+
+#define MAX_CAPACITY 10
+
+int parkingLot[MAX_CAPACITY];
+int top = -1;
+
+bool isFull(int capacity) {
+    return top == capacity - 1;
+}
+
+bool isEmpty() {
+    return top == -1;
+}
+
+void parkCar(int capacity, int carNumber) {
+    //Type your code here
+    if (!isFull(capacity)) {
+        parkingLot[++top] = carNumber;
+        cout << "Car " << carNumber << " is parked." << endl;
+    } else {
+        cout << "Parking lot is full. Car " << carNumber << " cannot be parked." << endl;
+    }
+}
+
+void removeCar() {
+    //Type your code here
+    if (!isEmpty()) {
+        int carNumber = parkingLot[top--];
+        cout << "Car " << carNumber << " is removed from the parking lot." << endl;
+    } else {
+        cout << "Parking lot is empty. No cars to remove." << endl;
+    }
+}
+
+int main() {
+    int maxCapacity;
+    cin >> maxCapacity;
+
+    while (true) {
+        int choice, carNumber;
+        cin >> choice;
+
+        if (choice == 1) {
+            cin >> carNumber;
+            parkCar(maxCapacity, carNumber);
+        } else if (choice == 2) {
+            removeCar();
+        } else if (choice == 3) {
+            break;
+        } 
+    }
+
+    return 0;
+}

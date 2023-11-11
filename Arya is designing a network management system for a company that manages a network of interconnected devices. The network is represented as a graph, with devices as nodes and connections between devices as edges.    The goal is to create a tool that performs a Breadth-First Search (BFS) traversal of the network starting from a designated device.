@@ -1,0 +1,101 @@
+// You are using GCC
+#include <stdio.h>
+#include <stdlib.h>
+#include <stdbool.h>
+
+#define MAX_NODES 100
+
+struct Queue {
+    int items[MAX_NODES];
+    int front;
+    int rear;
+};
+
+struct Queue* createQueue() {
+    struct Queue* queue = (struct Queue*)malloc(sizeof(struct Queue));
+    queue->front = -1;
+    queue->rear = -1;
+    return queue;
+}
+
+bool isEmpty(struct Queue* queue) {
+    return queue->front == -1;
+}
+
+void enqueue(struct Queue* queue, int value) {
+    if (queue->rear == MAX_NODES - 1) {
+        return;
+    } else {
+        if (queue->front == -1) {
+            queue->front = 0;
+        }
+        queue->rear++;
+        queue->items[queue->rear] = value;
+    }
+}
+
+int dequeue(struct Queue* queue) {
+    int item;
+    if (isEmpty(queue)) {
+        item = -1;
+    } else {
+        item = queue->items[queue->front];
+        queue->front++;
+        if (queue->front > queue->rear) {
+            queue->front = queue->rear = -1;
+        }
+    }
+    return item;
+}
+
+void BFS(int graph[MAX_NODES][MAX_NODES], int nodes, int source) {
+    //Type your code here
+    bool visited[MAX_NODES] = {false};
+    struct Queue* queue = createQueue();
+
+    visited[source] = true;
+    printf("BFS Traversal Order starting from Node %d: ", source);
+
+    enqueue(queue, source);
+
+    while (!isEmpty(queue)) {
+        int current = dequeue(queue);
+        printf("%d ", current);
+
+        for (int i = 0; i < nodes; i++) {
+            if (graph[current][i] == 1 && !visited[i]) {
+                enqueue(queue, i);
+                visited[i] = true;
+            }
+        }
+    }
+
+    printf("\n");
+}
+
+int main() {
+    int nodes, edges;
+    scanf("%d", &nodes);
+
+    int graph[MAX_NODES][MAX_NODES] = {0}; // Initialize the graph
+
+    scanf("%d", &edges);
+
+    for (int i = 0; i < edges; i++) {
+        int u, v;
+        scanf("%d %d", &u, &v);
+        graph[u][v] = 1;
+        graph[v][u] = 1; 
+    }
+
+    int source;
+    scanf("%d", &source);
+
+    if (source < 0 || source >= nodes) {
+        printf("Invalid source node\n");
+    } else {
+        BFS(graph, nodes, source);
+    }
+
+    return 0;
+}

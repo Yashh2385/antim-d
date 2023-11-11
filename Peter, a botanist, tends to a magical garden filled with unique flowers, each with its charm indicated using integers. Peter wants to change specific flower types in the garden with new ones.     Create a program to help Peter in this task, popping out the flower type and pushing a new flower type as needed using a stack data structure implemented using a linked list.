@@ -1,0 +1,66 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+struct Node {
+    int flowerType;
+    Node* next;
+};
+
+Node* createNode(int data) {
+    Node* newNode = new Node;
+    newNode->flowerType = data;
+    newNode->next = nullptr;
+    return newNode;
+}
+
+void push(Node** top, int data) {
+    Node* newNode = createNode(data);
+    newNode->next = *top;
+    *top = newNode;
+}
+
+int pop(Node** top) {
+    if (*top == nullptr) {
+        return -1; 
+    }
+    Node* temp = *top;
+    *top = (*top)->next;
+    int poppedData = temp->flowerType;
+    delete temp;
+    return poppedData;
+}
+
+void replaceFlowerType(Node** top, int oldType, int newType) {
+    // Type your code here
+    Node* current = *top;
+    while (current != nullptr) {
+        if (current->flowerType == oldType) {
+            current->flowerType = newType;
+        }
+        current = current->next;
+    }
+}
+
+void printGarden(struct Node* top) {
+    while (top != NULL) {
+        printf("%d ", top->flowerType);
+        top = top->next;
+    }
+    printf("\n");
+}
+
+int main() {
+    int n, flowerType, oldType, newType;
+    scanf("%d", &n);
+
+    struct Node* garden = NULL;
+    for (int i = 0; i < n; ++i) {
+        scanf("%d", &flowerType);
+        push(&garden, flowerType);
+    }
+
+    scanf("%d %d", &oldType, &newType);
+    replaceFlowerType(&garden, oldType, newType);
+    printGarden(garden);
+    return 0;
+}

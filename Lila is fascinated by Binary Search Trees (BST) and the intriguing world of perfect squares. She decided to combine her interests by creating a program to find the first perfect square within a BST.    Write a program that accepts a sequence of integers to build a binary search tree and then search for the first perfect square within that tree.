@@ -1,0 +1,67 @@
+#include <iostream>
+#include <cmath>
+using namespace std;
+
+struct TreeNode {
+    int val;
+    TreeNode* left;
+    TreeNode* right;
+};
+
+TreeNode* createNode(int value) {
+    TreeNode* newNode = (TreeNode*)malloc(sizeof(TreeNode));
+    newNode->val = value;
+    newNode->left = newNode->right = nullptr;
+    return newNode;
+}
+
+TreeNode* insert(TreeNode* root, int value) {
+    if (root == nullptr) return createNode(value);
+
+    if (value < root->val)
+        root->left = insert(root->left, value);
+    else if (value > root->val)
+        root->right = insert(root->right, value);
+
+    return root;
+}
+
+int isPerfectSquare(int num) {
+    if (num < 0) return 0;
+    int root = sqrt(num);
+    return root * root == num;
+}
+
+int findFirstPerfectSquare(TreeNode* root, int& found) {
+    //Type your code here
+    if (root == nullptr) return -1;
+
+    int leftResult = findFirstPerfectSquare(root->left, found);
+    if (found) return leftResult;
+
+    if (isPerfectSquare(root->val)) {
+        found = 1;
+        return root->val;
+    }
+
+    return findFirstPerfectSquare(root->right, found);
+}
+
+int main() {
+    TreeNode* root = nullptr;
+    int n, value;
+    cin >> n;
+    for (int i = 0; i < n; i++) {
+        cin >> value;
+        root = insert(root, value);
+    }
+    int found = 0;
+    int firstPerfectSquare = findFirstPerfectSquare(root, found);
+    if (found) {
+        cout << firstPerfectSquare ;
+    } else {
+        cout << "No perfect square found" ;
+    }
+
+    return 0;
+}

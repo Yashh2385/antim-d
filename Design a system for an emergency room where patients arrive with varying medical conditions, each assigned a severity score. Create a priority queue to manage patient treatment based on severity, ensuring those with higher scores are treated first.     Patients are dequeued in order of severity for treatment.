@@ -1,0 +1,86 @@
+#include <iostream>
+#include <climits> 
+using namespace std;
+
+struct Patient {
+    string name;
+    int severity;
+};
+
+struct Node {
+    Patient data;
+    Node* next;
+};
+
+struct PriorityQueue {
+    Node* front;
+};
+
+PriorityQueue* createPriorityQueue() {
+    PriorityQueue* pQueue = new PriorityQueue;
+    pQueue->front = nullptr;
+    return pQueue;
+}
+
+void enqueue(PriorityQueue* pQueue, Patient patient) {
+    Node* newNode = new Node;
+    newNode->data = patient;
+    newNode->next = nullptr;
+
+    if (!pQueue->front || patient.severity > pQueue->front->data.severity) {
+        newNode->next = pQueue->front;
+        pQueue->front = newNode;
+    } 
+    else {
+        Node* current = pQueue->front;
+        while (current->next && patient.severity <= current->next->data.severity) {
+            current = current->next;
+        }
+        newNode->next = current->next;
+        current->next = newNode;
+    }
+}
+
+Patient dequeue(PriorityQueue* pQueue) {
+    //Type your code here
+    struct Patient highestPriorityPatient;
+    
+    if (!pQueue->front) {
+        strcpy(highestPriorityPatient.name, "");
+        highestPriorityPatient.severity = INT_MIN;
+    } 
+    
+    else {
+        struct Node* temp = pQueue->front;
+        pQueue->front = pQueue->front->next;
+        highestPriorityPatient = temp->data;
+        free(temp);
+    }
+    return highestPriorityPatient;
+}
+
+bool isEmpty(PriorityQueue* pQueue) {
+    return pQueue->front == nullptr;
+}
+
+int main() {
+    PriorityQueue* emergencyQueue = createPriorityQueue();
+
+    int numPatients;
+    cin >> numPatients;
+
+    for (int i = 0; i < numPatients; i++) {
+        Patient patient;
+        cin >> patient.name;
+        cin >> patient.severity;
+        enqueue(emergencyQueue, patient);
+    }
+
+    while (!isEmpty(emergencyQueue)) {
+        Patient nextPatient = dequeue(emergencyQueue);
+        cout << "Treating patient: " << nextPatient.name << " (Severity: " << nextPatient.severity << ")\n";
+    }
+
+    delete emergencyQueue;
+    return 0;
+}

@@ -1,0 +1,63 @@
+#include <iostream>
+#include <cstdlib>
+using namespace std;
+
+struct Node {
+    int data;
+    struct Node* left;
+    struct Node* right;
+};
+
+struct Node* createNode(int data) {
+    struct Node* newNode = (struct Node*)malloc(sizeof(struct Node));
+    newNode->data = data;
+    newNode->left = nullptr;
+    newNode->right = nullptr;
+    return newNode;
+}
+
+struct Node* insert(struct Node* root, int data) {
+    if (root == nullptr) {
+        return createNode(data);
+    }
+
+    if (data < root->data) {
+        root->left = insert(root->left, data);
+    } else if (data > root->data) {
+        root->right = insert(root->right, data);
+    }
+
+    return root;
+}
+
+int countNodesLessThanValue(struct Node* root, int value) {
+    //Type your code here
+    if (root == NULL) {
+        return 0;
+    }
+
+    if (root->data < value) {
+        return 1 + countNodesLessThanValue(root->left, value) + countNodesLessThanValue(root->right, value);
+    } else {
+        return countNodesLessThanValue(root->left, value);
+    }
+}
+
+int main() {
+    struct Node* root = nullptr;
+    int n, value;
+    cin >> n;
+
+    for (int i = 0; i < n; i++) {
+        int data;
+        cin >> data;
+        root = insert(root, data);
+    }
+
+    cin >> value;
+
+    int count = countNodesLessThanValue(root, value);
+    cout << count;
+
+    return 0;
+}

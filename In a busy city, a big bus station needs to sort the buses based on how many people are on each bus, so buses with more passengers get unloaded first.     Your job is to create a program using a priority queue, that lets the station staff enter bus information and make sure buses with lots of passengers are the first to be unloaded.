@@ -1,0 +1,87 @@
+#include <iostream>
+#include <cstdlib>
+using namespace std;
+
+struct Bus {
+    int busNumber;
+    int numPassengers;
+};
+
+struct Node {
+    struct Bus bus;
+    struct Node* next;
+};
+
+struct PriorityQueue {
+    struct Node* front;
+};
+
+struct Node* createNode(struct Bus bus) {
+    struct Node* newNode = (struct Node*)malloc(sizeof(struct Node));
+    newNode->bus = bus;
+    newNode->next = NULL;
+    return newNode;
+}
+
+struct PriorityQueue* createPriorityQueue() {
+    struct PriorityQueue* queue = (struct PriorityQueue*)malloc(sizeof(struct PriorityQueue));
+    queue->front = NULL;
+    return queue;
+}
+
+void push(struct PriorityQueue* queue, struct Bus bus) {
+    struct Node* newNode = createNode(bus);
+
+    if (queue->front == NULL || bus.numPassengers >= queue->front->bus.numPassengers) {
+        newNode->next = queue->front;
+        queue->front = newNode;
+    } else {
+        struct Node* current = queue->front;
+        while (current->next != NULL && bus.numPassengers < current->next->bus.numPassengers) {
+            current = current->next;
+        }
+        newNode->next = current->next;
+        current->next = newNode;
+    }
+}
+
+struct Bus pop(struct PriorityQueue* queue) {
+    //Type your code here
+    if (queue->front == NULL) {
+        struct Bus emptyBus = { -1, -1 }; 
+        return emptyBus;
+    }
+
+    struct Node* top = queue->front;
+    struct Bus bus = top->bus;
+    queue->front = top->next;
+    free(top);
+    return bus;
+}
+
+int isEmpty(struct PriorityQueue* queue) {
+    return (queue->front == NULL);
+}
+
+int main() {
+    struct PriorityQueue* queue = createPriorityQueue();
+    int numBuses;
+
+    cin >> numBuses;
+
+    for (int i = 0; i < numBuses; i++) {
+        struct Bus bus;
+        cin >> bus.busNumber;
+        cin >> bus.numPassengers;
+        push(queue, bus);
+    }
+
+    cout << "Buses are being offloaded in priority order:" << endl;
+
+    while (!isEmpty(queue)) {
+        struct Bus bus = pop(queue);
+        cout << "Bus " << bus.busNumber << " with " << bus.numPassengers << " passengers arrived and is being offloaded." << endl;
+    }
+
+    return 0;
+}

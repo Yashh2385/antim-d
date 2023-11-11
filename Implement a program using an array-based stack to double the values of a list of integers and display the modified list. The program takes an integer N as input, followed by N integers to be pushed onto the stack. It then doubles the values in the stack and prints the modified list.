@@ -1,0 +1,43 @@
+// You are using GCC
+#include <iostream>
+using namespace std;
+
+#define MAX_SIZE 10
+
+int stack[MAX_SIZE];
+int top = -1;
+
+void push(int data) {
+    if (top < MAX_SIZE - 1) {
+        stack[++top] = data;
+    }
+}
+
+void doubleValues(int n) {
+    // Type your code here
+    for (int i = 0; i < n; i++) {
+        stack[i] *= 2;
+    }
+}
+
+void displayDoubledValues(int n) {
+    // Type your code here
+    for (int i = 0; i < n; i++) {
+        cout << stack[i] << " ";
+    }
+}
+
+int main() {
+    int n;
+    cin >> n;
+
+    for (int i = 0; i < n; i++) {
+        int num;
+        cin >> num;
+        push(num);
+    }
+
+    doubleValues(n);
+    displayDoubledValues(n);
+    return 0;
+}

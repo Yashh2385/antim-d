@@ -1,0 +1,29 @@
+#include <iostream>
+using namespace std;
+
+int main() {
+    int n;
+    int speedLimit = 60;
+    int totalSpeed = 0;
+    int countExceedingLimit = 0;
+
+    cin >> n;
+
+    const int maxSize = 100;
+    int speeds[maxSize];
+
+    for (int i = 0; i < n; i++) {
+        int speed;
+        cin >> speed;
+        speeds[i] = speed;
+        totalSpeed += speed;
+
+        if (speed > speedLimit) {
+            countExceedingLimit++;
+        }
+    }
+
+    cout << countExceedingLimit;
+
+    return 0;
+}

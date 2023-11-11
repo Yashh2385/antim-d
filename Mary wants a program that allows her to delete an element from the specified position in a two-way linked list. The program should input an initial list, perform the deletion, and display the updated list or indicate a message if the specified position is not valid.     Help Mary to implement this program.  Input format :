@@ -1,0 +1,81 @@
+// You are using GCC
+#include <iostream>
+using namespace std;
+
+struct Node {
+    int data;
+    struct Node* next;
+    struct Node* prev;
+};
+
+struct Node* createNode(int data) {
+    struct Node* newNode = new Node;
+    newNode->data = data;
+    newNode->prev = nullptr;
+    newNode->next = nullptr;
+    return newNode;
+}
+
+void deleteAtPosition(struct Node** head, int k) {
+    //Type your code here
+    struct Node* current = *head;
+
+    int count = 0;
+    while (current != nullptr && count < k) {
+        current = current->next;
+        count++;
+    }
+
+    if (current == nullptr) {
+        cout << "Invalid position" << endl;
+        return;
+    }
+
+    if (current->prev != nullptr) {
+        current->prev->next = current->next;
+    } 
+    else {
+        *head = current->next;
+    }
+
+    if (current->next != nullptr) {
+        current->next->prev = current->prev;
+    }
+
+    delete current;
+
+    struct Node* newCurrent = *head;
+    while (newCurrent != nullptr) {
+        cout << newCurrent->data << " ";
+        newCurrent = newCurrent->next;
+    }
+    cout << endl;
+}
+
+int main() {
+    int n, k;
+    cin >> n;
+
+    struct Node* head = nullptr;
+    struct Node* tail = nullptr;
+
+    for (int i = 0; i < n; i++) {
+        int data;
+        cin >> data;
+
+        struct Node* newNode = createNode(data);
+        if (head == nullptr) {
+            head = newNode;
+            tail = newNode;
+        } else {
+            tail->next = newNode;
+            newNode->prev = tail;
+            tail = newNode;
+        }
+    }
+
+    cin >> k;
+
+    deleteAtPosition(&head, k);
+    return 0;
+}

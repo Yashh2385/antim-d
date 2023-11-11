@@ -1,0 +1,64 @@
+#include <iostream>
+#include <cstdlib> 
+using namespace std;
+
+struct Node {
+    int key;
+    struct Node* left;
+    struct Node* right;
+};
+
+struct Node* createNode(int key) {
+    struct Node* newNode = (struct Node*)malloc(sizeof(struct Node));
+    newNode->key = key;
+    newNode->left = newNode->right = nullptr;
+    return newNode;
+}
+
+struct Node* insert(struct Node* root, int key) {
+    //Type your code here 
+    if (key % 2 == 0) {
+        if (root == nullptr) {
+            return createNode(key);
+        }
+
+        if (key < root->key) {
+            root->left = insert(root->left, key);
+        } else if (key > root->key) {
+            root->right = insert(root->right, key);
+        }
+
+        return root;
+    }
+
+    return root;
+}
+
+void inOrderTraversal(struct Node* root) {
+    if (root != nullptr) {
+        inOrderTraversal(root->left);
+        cout << root->key << " ";
+        inOrderTraversal(root->right);
+    }
+}
+
+int main() {
+    int numSlots;
+    cin >> numSlots;
+
+    int slots[numSlots];
+    for (int i = 0; i < numSlots; ++i) {
+        cin >> slots[i];
+    }
+
+    struct Node* root = nullptr;
+
+    for (int i = 0; i < numSlots; ++i) {
+        root = insert(root, slots[i]);
+    }
+
+    inOrderTraversal(root);
+    cout << endl;
+
+    return 0;
+}
